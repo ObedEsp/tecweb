@@ -174,6 +174,16 @@
         al <b>var_dump()</b>, pero aqui devuelve una salida en código PHP que cambia bool a cadena como en este ejemplo <br /><br />";
     ?>
 
+    <h2>Ejercicio 7</h2>
+    <?php
+        echo "<b>Versión de Apache y PHP:</b> " . $_SERVER['SERVER_SOFTWARE'] . "<br />";
+        echo "<b>Sistema Operativo del Servidor:</b> " . $_SERVER['SERVER_SIGNATURE'] . "<br />";
+        echo "<b>Idioma del Navegador (Cliente):</b> " . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "<br />";
+    ?>
+
+    <?php
+    echo 'Versión de PHP: ' . phpversion();
+    ?>
 
 </body>
 </html>
