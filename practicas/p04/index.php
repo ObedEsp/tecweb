@@ -65,5 +65,35 @@
         echo '<p>Inicialmente, $c era una referencia a $a, entonces cualquier cambio en $a también se reflejaba en $c.</p>';
         echo '<p>Luego, cuando se asigna $b = &$a, $b también se convirtió en una referencia a $a. Asi que, ahora tanto $b como $c tienen el mismo valor que $a.</p>';
     ?>
+
+<h2>Ejercicio 3</h2>
+    <?php
+    error_reporting(0);
+        // Declaración de variables
+        $a = "PHP5";
+        $z[] = &$a; // $z es un array que almacena una referencia a $a
+        echo '<h4>Después de asignar $a:</h4>';
+        var_dump($a, $z);
+
+        $b = "5a version de PHP";
+        echo '<h4>Después de asignar $b:</h4>';
+        var_dump($b);
+
+        $c = $b * 10; // Conversión implícita de cadena a número
+        echo '<h4>Después de calcular $c = $b * 10:</h4>';
+        var_dump($c);
+
+        $a .= $b; // Concatenación de cadenas
+        echo '<h4>Después de concatenar $a .= $b:</h4>';
+        var_dump($a, $z);
+
+        $b *= $c; // Multiplicación
+        echo '<h4>Después de asignar $b *= $c:</h4>';
+        var_dump($b);
+
+        $z[0] = "MySQL"; // Se modifica el primer elemento del array $z
+        echo '<h4>Después de asignar $z[0] = "MySQL":</h4>';
+        var_dump($a, $z);
+    ?>
 </body>
 </html>
