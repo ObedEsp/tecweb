@@ -34,5 +34,21 @@
         //Se añadió la declaración XML.
         //Se asignaron valores a las variables para evitar advertencias.
     ?>
+    <h2>Ejercicio 2</h2>
+    <?php
+    
+    echo '<h4>Respuesta:</h4>';
+
+        // Declaración de variables
+        $a = "ManejadorSQL";
+        $b = 'MySQL';
+        $c = &$a; // Referencia a $a
+
+        // Mostrar valores iniciales
+        echo '<h4>Estado inicial:</h4>';
+        echo "<p>a: $a</p>";
+        echo "<p>b: $b</p>";
+        echo "<p>c: $c</p>";
+    ?>
 </body>
 </html>
