@@ -59,6 +59,11 @@
         echo "<p>a: $a</p>";
         echo "<p>b: $b</p>";
         echo "<p>c: $c</p>";
+
+        // Explicación del resultado
+        echo '<h4>Explicación:</h4>';
+        echo '<p>Inicialmente, $c era una referencia a $a, entonces cualquier cambio en $a también se reflejaba en $c.</p>';
+        echo '<p>Luego, cuando se asigna $b = &$a, $b también se convirtió en una referencia a $a. Asi que, ahora tanto $b como $c tienen el mismo valor que $a.</p>';
     ?>
 </body>
 </html>
