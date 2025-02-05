@@ -30,6 +30,7 @@
         echo '<li>$_element1 es válida porque inicia con guión bajo.</li>';
         echo '<li>$house*5 es inválida porque el símbolo * no está permitido.</li>';
         echo '</ul>';
+        unset($_myvar, $_7var, $myvar, $var7, $_element1);
 
         //Se añadió la declaración XML.
         //Se asignaron valores a las variables para evitar advertencias.
@@ -52,7 +53,8 @@
 
         // Modificación de valores
         $a = "PHP server";
-        $b = &$a; // Ahora $b también apunta a $a
+        $b = &$a; 
+        $c = &$a; 
 
         // Mostrar valores después del cambio
         echo '<h4>Después del cambio:</h4>';
@@ -64,36 +66,28 @@
         echo '<h4>Explicación:</h4>';
         echo '<p>Inicialmente, $c era una referencia a $a, entonces cualquier cambio en $a también se reflejaba en $c.</p>';
         echo '<p>Luego, cuando se asigna $b = &$a, $b también se convirtió en una referencia a $a. Asi que, ahora tanto $b como $c tienen el mismo valor que $a.</p>';
+        unset($a, $b, $c);
     ?>
 
-<h2>Ejercicio 3</h2>
+<h2>Ejercicio 3 </h2>
     <?php
-    error_reporting(0);
-        // Declaración de variables
         $a = "PHP5";
-        $z[] = &$a; // $z es un array que almacena una referencia a $a
-        echo '<h4>Después de asignar $a:</h4>';
-        var_dump($a, $z);
-
+        $z[] = &$a;
         $b = "5a version de PHP";
-        echo '<h4>Después de asignar $b:</h4>';
-        var_dump($b);
+        @$c = $b * 10;
+        $a .= $b;
+        @$b *= $c;
+        $z[0] = "MySQL";
 
-        $c = $b * 10; // Conversión implícita de cadena a número
-        echo '<h4>Después de calcular $c = $b * 10:</h4>';
-        var_dump($c);
+        echo "a: $a <br />";  
+        echo "z[0]: $z[0] <br />";  
+        echo "b: $b <br />";  
+        echo "c: $c <br />";  
+        echo "a.: $a <br />"; 
+        echo "b: $b <br />";  
+        echo "z[0]: $z[0] <br />"; 
 
-        $a .= $b; // Concatenación de cadenas
-        echo '<h4>Después de concatenar $a .= $b:</h4>';
-        var_dump($a, $z);
-
-        $b *= $c; // Multiplicación
-        echo '<h4>Después de asignar $b *= $c:</h4>';
-        var_dump($b);
-
-        $z[0] = "MySQL"; // Se modifica el primer elemento del array $z
-        echo '<h4>Después de asignar $z[0] = "MySQL":</h4>';
-        var_dump($a, $z);
+        unset($a, $b, $c, $z);
     ?>
 </body>
 </html>
