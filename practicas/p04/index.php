@@ -89,5 +89,31 @@
 
         unset($a, $b, $c, $z);
     ?>
+
+<h2>Ejercicio 4 con global</h2>
+    <?php
+        $a = "PHP5";
+        $z[] = &$a;
+        $b = "5a version de PHP";
+        @$c = 10 * $b;
+        $a .= $b;
+        @$b *= $c;
+        $z[0] = "MySQL";
+
+        function mostrarValoresGlobal() {
+            global $a, $b, $c, $z;
+            echo "a: $a <br />";  
+            echo "z[0]: $z[0] <br />";  
+            echo "b: $b <br />";  
+            echo "c: $c <br />";  
+            echo "a.: $a <br />"; 
+            echo "b: $b <br />";  
+            echo "z[0]: $z[0] <br />"; 
+        }
+
+        mostrarValoresGlobal();
+
+        unset($a, $b, $c, $z);
+    ?>
 </body>
 </html>
