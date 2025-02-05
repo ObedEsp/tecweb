@@ -130,5 +130,30 @@
         unset($a, $b, $c);
     ?>
 
+<h2>Ejercicio 6</h2>
+    <?php
+        $a = "0";
+        $b = "TRUE";
+        $c = FALSE;
+        $d = ($a OR $b);
+        $e = ($a AND $c);
+        $f = ($a XOR $b);
+
+        var_dump($a);
+        echo "<br />";
+        var_dump($b);
+        echo "<br />";
+        var_dump($c);
+        echo "<br />";
+        var_dump($d);
+        echo "<br />";
+        var_dump($e);
+        echo "<br />";
+        var_dump($f);
+        echo "<br />";
+
+        unset($a, $b, $c, $d, $e, $f);
+    ?>
+
 </body>
 </html>
