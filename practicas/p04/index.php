@@ -34,7 +34,7 @@
         //Se añadió la declaración XML.
         //Se asignaron valores a las variables para evitar advertencias.
     ?>
-    <h2>Ejercicio 2</h2>
+<h2>Ejercicio 2</h2>
     <?php
     
     echo '<h4>Respuesta:</h4>';
@@ -46,6 +46,16 @@
 
         // Mostrar valores iniciales
         echo '<h4>Estado inicial:</h4>';
+        echo "<p>a: $a</p>";
+        echo "<p>b: $b</p>";
+        echo "<p>c: $c</p>";
+
+        // Modificación de valores
+        $a = "PHP server";
+        $b = &$a; // Ahora $b también apunta a $a
+
+        // Mostrar valores después del cambio
+        echo '<h4>Después del cambio:</h4>';
         echo "<p>a: $a</p>";
         echo "<p>b: $b</p>";
         echo "<p>c: $c</p>";
