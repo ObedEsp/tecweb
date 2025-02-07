@@ -41,5 +41,24 @@
             echo "<p>Números generados en cada intento: " . implode(", ", $resultadoWhile['numerosGenerados']) . "</p>";
         }
     ?>
+
+    <h2>Ejercicio 4</h2>
+    <p>Crear un arreglo con índices de 97 a 122 y valores de 'a' a 'z'</p>
+    <?php generarTablaLetras(crearArregloLetras()); ?>
+
+    <h2>Ejemplo de POST</h2>
+    <form action="index.php" method="post">
+        <label>Name:</label>
+        <input type="text" name="name" /><br />
+        <label>E-mail:</label>
+        <input type="text" name="email" /><br />
+        <input type="submit" />
+    </form>
+    <?php
+        if (isset($_POST["name"]) && isset($_POST["email"])) {
+            echo htmlspecialchars($_POST["name"]) . "<br />";
+            echo htmlspecialchars($_POST["email"]);
+        }
+    ?>
 </body>
 </html>

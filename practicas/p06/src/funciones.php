@@ -85,4 +85,23 @@ function encontrarMultiploConDoWhile($numeroDado) {
         'numerosGenerados' => $numerosGenerados
     ];
 }
+
+// Función para crear un arreglo con índices de 97 a 122 y valores de 'a' a 'z'
+function crearArregloLetras() {
+    $arreglo = [];
+    for ($i = 97; $i <= 122; $i++) {
+        $arreglo[$i] = chr($i); // Usar chr() para obtener el carácter ASCII
+    }
+    return $arreglo;
+}
+
+// Función para generar una tabla XHTML a partir del arreglo de letras
+function generarTablaLetras($arreglo) {
+    echo '<table border="1">';
+    echo '<tr><th>Índice</th><th>Letra</th></tr>';
+    foreach ($arreglo as $key => $value) {
+        echo "<tr><td>$key</td><td>$value</td></tr>";
+    }
+    echo '</table>';
+}
 ?>
