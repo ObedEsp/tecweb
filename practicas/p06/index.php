@@ -28,5 +28,18 @@
         echo "<p>Números generados: " . $resultado['numerosGenerados'] . "</p>";
         echo "<p>Iteraciones realizadas: " . $resultado['iteraciones'] . "</p>";
     ?>
+
+    <h2>Ejercicio 3</h2>
+    <p>Encontrar el primer número aleatorio múltiplo de un número dado</p>
+    <?php
+        if (isset($_GET['numeroDado'])) {
+            $numeroDado = htmlspecialchars($_GET['numeroDado']);
+            $resultadoWhile = encontrarMultiploConWhile($numeroDado);
+            echo "<h3>Resultado usando while:</h3>";
+            echo "<p>Número encontrado: " . $resultadoWhile['numero'] . "</p>";
+            echo "<p>Intentos realizados: " . $resultadoWhile['intentos'] . "</p>";
+            echo "<p>Números generados en cada intento: " . implode(", ", $resultadoWhile['numerosGenerados']) . "</p>";
+        }
+    ?>
 </body>
 </html>

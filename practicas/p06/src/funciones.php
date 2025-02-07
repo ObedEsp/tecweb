@@ -47,4 +47,42 @@ function generarSecuenciaImparParImpar() {
         'numerosGenerados' => $numerosGenerados
     ];
 }
+
+// Función para encontrar un número aleatorio múltiplo de un número dado (usando while)
+function encontrarMultiploConWhile($numeroDado) {
+    $intentos = 0; // Contador de intentos
+    $numerosGenerados = []; // Arreglo para almacenar los números generados
+
+    while (true) {
+        $intentos++;
+        $numeroAleatorio = rand(1, 1000); // Generar un número aleatorio entre 1 y 1000
+        $numerosGenerados[] = $numeroAleatorio; // Almacenar el número generado
+
+        if ($numeroAleatorio % $numeroDado == 0) {
+            return [
+                'numero' => $numeroAleatorio,
+                'intentos' => $intentos,
+                'numerosGenerados' => $numerosGenerados
+            ];
+        }
+    }
+}
+
+// Función para encontrar un número aleatorio múltiplo de un número dado (usando do-while)
+function encontrarMultiploConDoWhile($numeroDado) {
+    $intentos = 0; // Contador de intentos
+    $numerosGenerados = []; // Arreglo para almacenar los números generados
+
+    do {
+        $intentos++;
+        $numeroAleatorio = rand(1, 1000); // Generar un número aleatorio entre 1 y 1000
+        $numerosGenerados[] = $numeroAleatorio; // Almacenar el número generado
+    } while ($numeroAleatorio % $numeroDado != 0);
+
+    return [
+        'numero' => $numeroAleatorio,
+        'intentos' => $intentos,
+        'numerosGenerados' => $numerosGenerados
+    ];
+}
 ?>
