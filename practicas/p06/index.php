@@ -60,5 +60,29 @@
             echo htmlspecialchars($_POST["email"]);
         }
     ?>
+
+    <h2>Ejercicio 5</h2>
+    <p>Verificar si una persona es de sexo femenino y está en el rango de edad permitido (18-35 años).</p>
+    <form action="index.php" method="post">
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" name="edad" required="required" /><br /><br />
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo" required="required">
+            <option value="femenino">Femenino</option>
+            <option value="masculino">Masculino</option>
+        </select><br /><br />
+        <input type="submit" value="Verificar" />
+    </form>
+    <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edad']) && isset($_POST['sexo'])) {
+            $edad = (int) $_POST['edad'];
+            $sexo = htmlspecialchars($_POST['sexo']);
+            if ($sexo == "femenino" && $edad >= 18 && $edad <= 35) {
+                echo "<p>Bienvenida, usted está en el rango de edad permitido.</p>";
+            } else {
+                echo "<p>Lo siento, no cumple con los requisitos.</p>";
+            }
+        }
+    ?>
 </body>
 </html>
