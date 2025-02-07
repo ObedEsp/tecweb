@@ -84,5 +84,26 @@
             }
         }
     ?>
+
+    <h2>Ejercicio 6</h2>
+    <form method="post">
+        <label>Consultar por matrícula: </label>
+        <input type="text" name="matricula" placeholder="Ej: ABC1234" />
+        <button type="submit" name="consulta_unica">Consultar</button>
+    </form>
+    <form method="post">
+        <button type="submit" name="mostrar_todos">Mostrar Todos</button>
+    </form>
+    <div id="resultado">
+        <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (isset($_POST["consulta_unica"]) && !empty($_POST["matricula"])) {
+                    echo consultarVehiculo(htmlspecialchars($_POST["matricula"]));
+                } elseif (isset($_POST["mostrar_todos"])) {
+                    echo mostrarTodosVehiculos();
+                }
+            }
+        ?>
+    </div>
 </body>
 </html>
