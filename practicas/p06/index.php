@@ -15,3 +15,18 @@
             mostrarResultadoEjercicio1($num);
         }
     ?>
+
+    <h2>Ejercicio 2</h2>
+    <p>Generar secuencias de números aleatorios hasta obtener impar, par, impar</p>
+    <?php
+        $resultado = generarSecuenciaImparParImpar();
+        echo "<h3>Secuencias generadas:</h3><pre>";
+        foreach ($resultado['matriz'] as $fila) {
+            echo implode(", ", $fila) . "\n";
+        }
+        echo "</pre>";
+        echo "<p>Números generados: " . $resultado['numerosGenerados'] . "</p>";
+        echo "<p>Iteraciones realizadas: " . $resultado['iteraciones'] . "</p>";
+    ?>
+</body>
+</html>
