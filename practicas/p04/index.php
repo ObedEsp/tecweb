@@ -8,182 +8,71 @@
 <body>
     <h2>Ejercicio 1</h2>
     <p>Determina cuál de las siguientes variables son válidas y explica por qué:</p>
-    <p>$_myvar,  $_7var,  myvar,  $myvar,  $var7,  $_element1, $house*5</p>
-    <?php
-        // Declaración de variables
-        $_myvar = "valor1";
-        $_7var = "valor2";
-        //myvar;       // Inválida
-        $myvar = "valor3";
-        $var7 = "valor4";
-        $_element1 = "valor5";
-        //$house*5;     // Inválida
-        
-        echo '<h4>Respuesta:</h4>';   
+    <p>$_myvar, $_7var, myvar, $myvar, $var7, $_element1, $house*5</p>
+
+    <h4>Respuesta:</h4>
+    <ul>
+        <li>$_myvar es válida porque inicia con guión bajo.</li>
+        <li>$_7var es válida porque inicia con guión bajo.</li>
+        <li>myvar es inválida porque no tiene el signo de dólar ($).</li>
+        <li>$myvar es válida porque inicia con una letra.</li>
+        <li>$var7 es válida porque inicia con una letra.</li>
+        <li>$_element1 es válida porque inicia con guión bajo.</li>
+        <li>$house*5 es inválida porque el símbolo * no está permitido.</li>
+    </ul>
+
+    <h2>Ejercicio 2</h2>
+    <h4>Respuesta:</h4>
+    <h4>Estado inicial:</h4>
+    <p>a: ManejadorSQL</p>
+    <p>b: MySQL</p>
+    <p>c: ManejadorSQL</p>
     
-        echo '<ul>';
-        echo '<li>$_myvar es válida porque inicia con guión bajo.</li>';
-        echo '<li>$_7var es válida porque inicia con guión bajo.</li>';
-        echo '<li>myvar es inválida porque no tiene el signo de dólar ($).</li>';
-        echo '<li>$myvar es válida porque inicia con una letra.</li>';
-        echo '<li>$var7 es válida porque inicia con una letra.</li>';
-        echo '<li>$_element1 es válida porque inicia con guión bajo.</li>';
-        echo '<li>$house*5 es inválida porque el símbolo * no está permitido.</li>';
-        echo '</ul>';
-        unset($_myvar, $_7var, $myvar, $var7, $_element1);
+    <h4>Después del cambio:</h4>
+    <p>a: PHP server</p>
+    <p>b: PHP server</p>
+    <p>c: PHP server</p>
 
-        //Se añadió la declaración XML.
-        //Se asignaron valores a las variables para evitar advertencias.
-    ?>
-<h2>Ejercicio 2</h2>
-    <?php
-    
-    echo '<h4>Respuesta:</h4>';
+    <h4>Explicación:</h4>
+    <p>Inicialmente, $c era una referencia a $a, entonces cualquier cambio en $a también se reflejaba en $c.</p>
+    <p>Luego, cuando se asigna $b = &amp;$a, $b también se convirtió en una referencia a $a. Así que, ahora tanto $b como $c tienen el mismo valor que $a.</p>
 
-        // Declaración de variables
-        $a = "ManejadorSQL";
-        $b = 'MySQL';
-        $c = &$a; // Referencia a $a
+    <h2>Ejercicio 3</h2>
+    <p>a: MySQL <br />z[0]: MySQL <br />b: 250 <br />c: 50 <br />a.: MySQL <br />b: 250 <br />z[0]: MySQL</p>
 
-        // Mostrar valores iniciales
-        echo '<h4>Estado inicial:</h4>';
-        echo "<p>a: $a</p>";
-        echo "<p>b: $b</p>";
-        echo "<p>c: $c</p>";
+    <h2>Ejercicio 4 con global</h2>
+    <p>a: MySQL <br />z[0]: MySQL <br />b: 250 <br />c: 50 <br />a.: MySQL <br />b: 250 <br />z[0]: MySQL</p>
 
-        // Modificación de valores
-        $a = "PHP server";
-        $b = &$a; 
-        $c = &$a; 
+    <h2>Ejercicio 5</h2>
+    <p>a: 9E3 <br />b: 7 <br />c: 9000</p>
 
-        // Mostrar valores después del cambio
-        echo '<h4>Después del cambio:</h4>';
-        echo "<p>a: $a</p>";
-        echo "<p>b: $b</p>";
-        echo "<p>c: $c</p>";
+    <h2>Ejercicio 6</h2>
+    <p>string(1) "0"</p>
+    <p>string(4) "TRUE"</p>
+    <p>bool(false)</p>
+    <p>bool(true)</p>
+    <p>bool(false)</p>
+    <p>bool(true)</p>
 
-        // Explicación del resultado
-        echo '<h4>Explicación:</h4>';
-        echo '<p>Inicialmente, $c era una referencia a $a, entonces cualquier cambio en $a también se reflejaba en $c.</p>';
-        echo '<p>Luego, cuando se asigna $b = &$a, $b también se convirtió en una referencia a $a. Asi que, ahora tanto $b como $c tienen el mismo valor que $a.</p>';
-        unset($a, $b, $c);
-    ?>
-
-<h2>Ejercicio 3 </h2>
-    <?php
-        $a = "PHP5";
-        $z[] = &$a;
-        $b = "5a version de PHP";
-        @$c = $b * 10;
-        $a .= $b;
-        @$b *= $c;
-        $z[0] = "MySQL";
-
-        echo "a: $a <br />";  
-        echo "z[0]: $z[0] <br />";  
-        echo "b: $b <br />";  
-        echo "c: $c <br />";  
-        echo "a.: $a <br />"; 
-        echo "b: $b <br />";  
-        echo "z[0]: $z[0] <br />"; 
-
-        unset($a, $b, $c, $z);
-    ?>
-
-<h2>Ejercicio 4 con global</h2>
-    <?php
-        $a = "PHP5";
-        $z[] = &$a;
-        $b = "5a version de PHP";
-        @$c = 10 * $b;
-        $a .= $b;
-        @$b *= $c;
-        $z[0] = "MySQL";
-
-        function mostrarValoresGlobal() {
-            global $a, $b, $c, $z;
-            echo "a: $a <br />";  
-            echo "z[0]: $z[0] <br />";  
-            echo "b: $b <br />";  
-            echo "c: $c <br />";  
-            echo "a.: $a <br />"; 
-            echo "b: $b <br />";  
-            echo "z[0]: $z[0] <br />"; 
-        }
-
-        mostrarValoresGlobal();
-
-        unset($a, $b, $c, $z);
-    ?>
-
-<h2>Ejercicio 5</h2>
-    <?php
-        $a = "7 personas";
-        $b = (integer) $a;
-        $a = "9E3";
-        $c = (double) $a;
-
-        echo "a: $a <br />";  
-        echo "b: $b <br />";  
-        echo "c: $c <br />";   
-
-        unset($a, $b, $c);
-    ?>
-
-<h2>Ejercicio 6</h2>
-    <?php
-        $a = "0";
-        $b = "TRUE";
-        $c = FALSE;
-        $d = ($a OR $b);
-        $e = ($a AND $c);
-        $f = ($a XOR $b);
-
-        var_dump($a);
-        echo "<br />";
-        var_dump($b);
-        echo "<br />";
-        var_dump($c);
-        echo "<br />";
-        var_dump($d);
-        echo "<br />";
-        var_dump($e);
-        echo "<br />";
-        var_dump($f);
-        echo "<br />";
-
-        unset($a, $b, $c, $d, $e, $f);
-    ?>
     <h2>Ejercicio 6 con var_export</h2>
-    <?php
-        $a = "0";
-        $b = "TRUE";
-        $c = FALSE;
-        $d = ($a OR $b);
-        $e = ($a AND $c);
-        $f = ($a XOR $b);
-        
-        echo "a: $a <br />";  
-        echo "b: $b <br />";  
-        echo "c: " . var_export($c, true) . "<br />";  
-        echo "d: " . var_export($d, true) . "<br />";  
-        echo "e: " . var_export($e, true) . "<br />";  
-        echo "f: " . var_export($f, true) . "<br />";  
-
-        echo "<br />La función <b>var_export</b> nos da una representación en forma de cadena de una variable, similar <br /> 
-        al <b>var_dump()</b>, pero aqui devuelve una salida en código PHP que cambia bool a cadena como en este ejemplo <br /><br />";
-    ?>
+    <p>a: 0 <br />b: TRUE <br />c: false <br />d: true <br />e: false <br />f: true</p>
+    <p>La función <b>var_export</b> nos da una representación en forma de cadena de una variable, similar al <b>var_dump()</b>, pero aquí devuelve una salida en código PHP que cambia bool a cadena como en este ejemplo.</p>
 
     <h2>Ejercicio 7</h2>
-    <?php
-        echo "<b>Versión de Apache y PHP:</b> " . $_SERVER['SERVER_SOFTWARE'] . "<br />";
-        echo "<b>Sistema Operativo del Servidor:</b> " . $_SERVER['SERVER_SIGNATURE'] . "<br />";
-        echo "<b>Idioma del Navegador (Cliente):</b> " . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "<br />";
-    ?>
+    <p><b>Versión de Apache y PHP:</b> Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12</p>
+    <p><b>Sistema Operativo del Servidor:</b></p>
+    <address>Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12 Server at localhost Port 82</address>
+    <p><b>Idioma del Navegador (Cliente):</b> es,es-ES;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</p>
+    <p>Versión de PHP: 8.2.12</p>
 
-    <?php
-    echo 'Versión de PHP: ' . phpversion();
-    ?>
+    <div>  <p>
+    <p>
+  <a href="https://validator.w3.org/check?uri=referer">
+    <img src="https://www.w3.org/Icons/valid-html401" alt="¡HTML válido!" style="border:0;width:88px;height:31px">
+  </a>
+</p>
+
+    </div>
 
 </body>
 </html>
