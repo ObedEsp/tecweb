@@ -27,11 +27,17 @@ if ($result->num_rows > 0) {
     echo "Error: El producto ya existe en la base de datos.";
 } else {
 
-//Insertar el nuevo producto con 'eliminado' en 0
+/*Insertar el nuevo producto con 'eliminado' en 0
 $sql_insert = "INSERT INTO productos (nombre, marca, modelo, precio, detalles, unidades, imagen, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
 $stmt = $link->prepare($sql_insert);
 $stmt->bind_param("sssdsis", $nombre, $marca, $modelo, $precio, $detalles, $unidades, $imagen);
- 
+*/ 
+
+// Insertar el nuevo producto especificando solo las columnas necesarias (sin incluir 'id' ni 'eliminado')
+$sql_insert = "INSERT INTO productos (nombre, marca, modelo, precio, detalles, unidades, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)";
+$stmt = $link->prepare($sql_insert);
+$stmt->bind_param("sssdsis", $nombre, $marca, $modelo, $precio, $detalles, $unidades, $imagen);
+
     
     if ($stmt->execute()) {
         echo "<h3>Producto registrado exitosamente</h3>";
