@@ -6,19 +6,14 @@ var baseJSON = {
     "marca": "NA",
     "detalles": "NA",
     "imagen": "img/default.png"
-  };
+};
 
 // FUNCIÓN CALLBACK DE BOTÓN "Buscar"
-function buscarID(e) {
-    /**
-     * Revisar la siguiente información para entender porqué usar event.preventDefault();
-     * http://qbit.com.mx/blog/2013/01/07/la-diferencia-entre-return-false-preventdefault-y-stoppropagation-en-jquery/#:~:text=PreventDefault()%20se%20utiliza%20para,escuche%20a%20trav%C3%A9s%20del%20DOM
-     * https://www.geeksforgeeks.org/when-to-use-preventdefault-vs-return-false-in-javascript/
-     */
+function buscarProducto(e) {
     e.preventDefault();
 
-    // SE OBTIENE EL ID A BUSCAR
-    var id = document.getElementById('search').value;
+    // SE OBTIENE EL TÉRMINO DE BÚSQUEDA (PUEDE SER ID, MARCA, NOMBRE O DETALLES)
+    var busqueda = document.getElementById('search').value;
 
     // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
     var client = getXMLHttpRequest();
@@ -30,60 +25,96 @@ function buscarID(e) {
             console.log('[CLIENTE]\n'+client.responseText);
             
             // SE OBTIENE EL OBJETO DE DATOS A PARTIR DE UN STRING JSON
-            let productos = JSON.parse(client.responseText);    // similar a eval('('+client.responseText+')');
+            let productos = JSON.parse(client.responseText);
             
-            // SE VERIFICA SI EL OBJETO JSON TIENE DATOS
-            if(Object.keys(productos).length > 0) {
-                // SE CREA UNA LISTA HTML CON LA DESCRIPCIÓN DEL PRODUCTO
-                let descripcion = '';
-                    descripcion += '<li>precio: '+productos.precio+'</li>';
-                    descripcion += '<li>unidades: '+productos.unidades+'</li>';
-                    descripcion += '<li>modelo: '+productos.modelo+'</li>';
-                    descripcion += '<li>marca: '+productos.marca+'</li>';
-                    descripcion += '<li>detalles: '+productos.detalles+'</li>';
-                
-                // SE CREA UNA PLANTILLA PARA CREAR LA(S) FILA(S) A INSERTAR EN EL DOCUMENTO HTML
+            // SE VERIFICA SI HAY PRODUCTOS ENCONTRADOS
+            if (productos.length > 0) {
                 let template = '';
+                
+                productos.forEach(producto => {
+                    let descripcion = `
+                        <li>Precio: ${producto.precio}</li>
+                        <li>Unidades: ${producto.unidades}</li>
+                        <li>Modelo: ${producto.modelo}</li>
+                        <li>Marca: ${producto.marca}</li>
+                        <li>Detalles: ${producto.detalles}</li>
+                    `;
+
                     template += `
                         <tr>
-                            <td>${productos.id}</td>
-                            <td>${productos.nombre}</td>
+                            <td>${producto.id}</td>
+                            <td>${producto.nombre}</td>
+                            <td>${producto.marca}</td>
                             <td><ul>${descripcion}</ul></td>
                         </tr>
                     `;
+                });
 
-                // SE INSERTA LA PLANTILLA EN EL ELEMENTO CON ID "productos"
+                // SE INSERTAN LOS PRODUCTOS EN EL ELEMENTO CON ID "productos"
                 document.getElementById("productos").innerHTML = template;
+            } else {
+                document.getElementById("productos").innerHTML = '<tr><td colspan="4">No se encontraron productos.</td></tr>';
             }
         }
     };
-    client.send("id="+id);
+    client.send("busqueda=" + encodeURIComponent(busqueda));
 }
 
 // FUNCIÓN CALLBACK DE BOTÓN "Agregar Producto"
 function agregarProducto(e) {
     e.preventDefault();
 
-    // SE OBTIENE DESDE EL FORMULARIO EL JSON A ENVIAR
-    var productoJsonString = document.getElementById('description').value;
-    // SE CONVIERTE EL JSON DE STRING A OBJETO
-    var finalJSON = JSON.parse(productoJsonString);
-    // SE AGREGA AL JSON EL NOMBRE DEL PRODUCTO
-    finalJSON['nombre'] = document.getElementById('name').value;
-    // SE OBTIENE EL STRING DEL JSON FINAL
-    productoJsonString = JSON.stringify(finalJSON,null,2);
+    try {
+        // SE OBTIENE DESDE EL FORMULARIO EL JSON A ENVIAR
+        var productoJsonString = document.getElementById('description').value;
+        var finalJSON = JSON.parse(productoJsonString);
+        finalJSON['nombre'] = document.getElementById('name').value;
 
-    // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
-    var client = getXMLHttpRequest();
-    client.open('POST', './backend/create.php', true);
-    client.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
-    client.onreadystatechange = function () {
-        // SE VERIFICA SI LA RESPUESTA ESTÁ LISTA Y FUE SATISFACTORIA
-        if (client.readyState == 4 && client.status == 200) {
-            console.log(client.responseText);
+        // VALIDACIONES
+        if (!finalJSON.nombre.trim()) {
+            throw new Error("El nombre del producto no puede estar vacío.");
         }
-    };
-    client.send(productoJsonString);
+        if (isNaN(finalJSON.precio) || finalJSON.precio < 99) {
+            throw new Error("El precio debe ser un número mayor o igual a 99.");
+        }
+        if (!finalJSON.marca.trim()) {
+            throw new Error("La marca del producto no puede estar vacía.");
+        }
+        if (!finalJSON.detalles.trim()) {
+            throw new Error("Los detalles del producto no pueden estar vacíos.");
+        }
+        if (!Number.isInteger(finalJSON.unidades) || finalJSON.unidades < 1) {
+            throw new Error("Las unidades deben ser un número entero positivo.");
+        }
+        if (!finalJSON.imagen.trim()) {
+            finalJSON.imagen = "img/default.png"; // Asignar imagen por defecto
+        }
+
+        // SE OBTIENE EL STRING DEL JSON FINAL
+        productoJsonString = JSON.stringify(finalJSON, null, 2);
+
+        // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
+        var client = getXMLHttpRequest();
+        client.open('POST', './backend/create.php', true);
+        client.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
+        client.onreadystatechange = function () {
+            if (client.readyState == 4 && client.status == 200) {
+                // SE VERIFICA LA RESPUESTA DEL SERVIDOR
+                var response = JSON.parse(client.responseText);
+                
+                // Si la respuesta contiene éxito, mostrar mensaje de éxito
+                if (response.success) {
+                    window.alert(response.success);
+                } else if (response.error) {
+                    // Si hay un error, mostrar el mensaje de error
+                    window.alert(response.error);
+                }
+            }
+        };
+        client.send(productoJsonString);
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
 }
 
 // SE CREA EL OBJETO DE CONEXIÓN COMPATIBLE CON EL NAVEGADOR
@@ -93,10 +124,6 @@ function getXMLHttpRequest() {
     try{
         objetoAjax = new XMLHttpRequest();
     }catch(err1){
-        /**
-         * NOTA: Las siguientes formas de crear el objeto ya son obsoletas
-         *       pero se comparten por motivos historico-académicos.
-         */
         try{
             // IE7 y IE8
             objetoAjax = new ActiveXObject("Msxml2.XMLHTTP");
@@ -113,10 +140,6 @@ function getXMLHttpRequest() {
 }
 
 function init() {
-    /**
-     * Convierte el JSON a string para poder mostrarlo
-     * ver: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON
-     */
     var JsonString = JSON.stringify(baseJSON,null,2);
     document.getElementById("description").value = JsonString;
 }
