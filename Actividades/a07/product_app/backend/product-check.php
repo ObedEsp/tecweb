@@ -1,28 +1,20 @@
 <?php
-include_once __DIR__.'/database.php';
+namespace MyAPI;
+require_once __DIR__ . '/myapi/Products.php';
 
+// Respuesta por defecto
+$response = ['error' => 'No se proporcionó el nombre del producto'];
+
+// Verificar si se recibió el parámetro nombre
 if (isset($_GET['nombre'])) {
-    $nombre = $_GET['nombre'];
-
-    // Consulta para verificar si el nombre del producto ya existe
-    $query = "SELECT COUNT(*) as count FROM productos WHERE nombre = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("s", $nombre);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-
-    // Verificar si el nombre del producto ya existe
-    if ($row['count'] > 0) {
-        echo json_encode(['existe' => true]);
-    } else {
-        echo json_encode(['existe' => false]);
-    }
-
-    $stmt->close();
-    $conexion->close();
-} else {
-    echo json_encode(['error' => 'No se proporcionó el nombre del producto.']);
+    $products = new Products();
+    $products->singleByName($_GET['nombre']);
+    $result = json_decode($products->getData(), true);
+    
+    $response = ['existe' => !empty($result)];
 }
+
+// Devolver respuesta JSON
+echo json_encode($response, JSON_PRETTY_PRINT);
 
 ?>

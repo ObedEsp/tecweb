@@ -1,34 +1,38 @@
 <?php
-    include_once __DIR__.'/database.php';
+namespace MyAPI;
+require_once __DIR__ . '/myapi/Products.php';
 
-    // SE OBTIENE LA INFORMACIÓN DEL PRODUCTO ENVIADA POR EL CLIENTE
-    $data = array(
-        'status'  => 'error',
-        'message' => 'Ya existe un producto con ese nombre'
-    );
-    if(isset($_POST['nombre'])) {
-        // SE TRANSFORMA EL POST A UN STRING EN JSON, Y LUEGO A OBJETO
-        $jsonOBJ = json_decode( json_encode($_POST) );
-        // SE ASUME QUE LOS DATOS YA FUERON VALIDADOS ANTES DE ENVIARSE
-        $sql = "SELECT * FROM productos WHERE nombre = '{$jsonOBJ->nombre}' AND eliminado = 0";
-	    $result = $conexion->query($sql);
+$response = ['status' => 'error', 'message' => 'No se recibieron datos del producto'];
+
+// Manejar la solicitud POST sin try-catch
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $inputData = !empty($_POST) ? $_POST : (json_decode(file_get_contents('php://input'), true) ?? []);
+    
+    if (!empty($inputData)) {
+        $products = new Products();
         
-        if ($result->num_rows == 0) {
-            $conexion->set_charset("utf8");
-            $sql = "INSERT INTO productos VALUES (null, '{$jsonOBJ->nombre}', '{$jsonOBJ->marca}', '{$jsonOBJ->modelo}', {$jsonOBJ->precio}, '{$jsonOBJ->detalles}', {$jsonOBJ->unidades}, '{$jsonOBJ->imagen}', 0)";
-            if($conexion->query($sql)){
-                $data['status'] =  "success";
-                $data['message'] =  "Producto agregado";
-            } else {
-                $data['message'] = "ERROR: No se ejecuto $sql. " . mysqli_error($conexion);
-            }
+        // Verificar si ya existe
+        $products->singleByName($inputData['nombre'] ?? '');
+        $existing = json_decode($products->getData(), true);
+        
+        if (empty($existing)) {
+            $productData = [
+                'name' => $inputData['nombre'] ?? '',
+                'brand' => $inputData['marca'] ?? '',
+                'model' => $inputData['modelo'] ?? '',
+                'price' => $inputData['precio'] ?? 0,
+                'details' => $inputData['detalles'] ?? '',
+                'units' => $inputData['unidades'] ?? 0,
+                'image' => $inputData['imagen'] ?? ''
+            ];
+            
+            $products->add($productData);
+            $response = json_decode($products->getData(), true);
+        } else {
+            $response['message'] = 'Ya existe un producto con ese nombre';
         }
-
-        $result->free();
-        // Cierra la conexion
-        $conexion->close();
     }
+}
 
-    // SE HACE LA CONVERSIÓN DE ARRAY A JSON
-    echo json_encode($data, JSON_PRETTY_PRINT);
+echo json_encode($response, JSON_PRETTY_PRINT);
 ?>

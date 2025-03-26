@@ -1,28 +1,40 @@
 <?php
-    include_once __DIR__.'/database.php';
+namespace MyAPI;
+require_once __DIR__ . '/myapi/Products.php';
 
-    // SE CREA EL ARREGLO QUE SE VA A DEVOLVER EN FORMA DE JSON
-    $data = array(
-        'status'  => 'error',
-        'message' => 'La consulta falló'
-    );
-    // SE VERIFICA HABER RECIBIDO EL ID
-    if( isset($_POST['id']) ) {
-        $jsonOBJ = json_decode( json_encode($_POST) );
-        // SE REALIZA LA QUERY DE BÚSQUEDA Y AL MISMO TIEMPO SE VALIDA SI HUBO RESULTADOS
-        $sql =  "UPDATE productos SET nombre='{$jsonOBJ->nombre}', marca='{$jsonOBJ->marca}',";
-        $sql .= "modelo='{$jsonOBJ->modelo}', precio={$jsonOBJ->precio}, detalles='{$jsonOBJ->detalles}',"; 
-        $sql .= "unidades={$jsonOBJ->unidades}, imagen='{$jsonOBJ->imagen}' WHERE id={$jsonOBJ->id}";
-        $conexion->set_charset("utf8");
-        if ( $conexion->query($sql) ) {
-            $data['status'] =  "success";
-            $data['message'] =  "Producto actualizado";
-		} else {
-            $data['message'] = "ERROR: No se ejecuto $sql. " . mysqli_error($conexion);
-        }
-		$conexion->close();
-    } 
+// Respuesta por defecto
+$response = [
+    'status' => 'error',
+    'message' => 'Datos incompletos para actualización'
+];
+
+// Procesar solicitud POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos de entrada (compatible con POST tradicional y JSON)
+    $inputData = !empty($_POST) ? $_POST : (json_decode(file_get_contents('php://input'), true) ?? []);
     
-    // SE HACE LA CONVERSIÓN DE ARRAY A JSON
-    echo json_encode($data, JSON_PRETTY_PRINT);
+    // Verificar datos requeridos
+    if (!empty($inputData['id'])) {
+        $products = new Products();
+        
+        // Preparar datos del producto
+        $productData = [
+            'id' => $inputData['id'],
+            'name' => $inputData['nombre'] ?? '',
+            'brand' => $inputData['marca'] ?? '',
+            'model' => $inputData['modelo'] ?? '',
+            'price' => $inputData['precio'] ?? 0,
+            'details' => $inputData['detalles'] ?? '',
+            'units' => $inputData['unidades'] ?? 0,
+            'image' => $inputData['imagen'] ?? ''
+        ];
+        
+        // Llamar al método update
+        $products->update($productData);
+        $response = json_decode($products->getData(), true);
+    }
+}
+
+// Devolver respuesta JSON
+echo json_encode($response, JSON_PRETTY_PRINT);
 ?>
