@@ -1,0 +1,15 @@
+{
+    "name": "tecweb/myapi",
+    "description": "Gestor de productos basado en MVC",
+    "autoload": {
+        "psr-4": {
+            "Tecweb\\Myapi\\": "backend/myapi/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Obed Espinosa B"
+        }
+    ],
+    "require": {}
+}
