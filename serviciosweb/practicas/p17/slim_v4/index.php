@@ -38,7 +38,7 @@ $app->post("/testjson", function(Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
     return $response;
 });
-
+//corre la app
 $app->run();
 
 ?>
